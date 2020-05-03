@@ -27,7 +27,7 @@ class User(Base):
     def register_by_email(nickname, account, secret):
         with db.auto_commit():
             user = User()
-            user.nickname = nickname,
+            user.nickname = nickname
             user.email = account
             user.password = secret
             db.session.add(user)
