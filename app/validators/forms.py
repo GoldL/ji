@@ -2,11 +2,12 @@
 # @Time    : 2020/5/3 下午11:41
 # @Author  : iGolden
 # @Software: PyCharm
-from wtforms import Form, StringField, IntegerField
-from wtforms.validators import DataRequired, length, Regexp, ValidationError, Email
+from wtforms import StringField, IntegerField
+from wtforms.validators import DataRequired, length, ValidationError, Email, Regexp
 
 from app.libs.enums import ClientTypeEnum
 from app.models.user import User
+from app.validators.base import BaseForm as Form
 
 
 class ClientForm(Form):
@@ -24,7 +25,7 @@ class ClientForm(Form):
 
 class UserEmailForm(ClientForm):
     account = StringField(validators=[Email(message='请输入合法邮箱地址')])
-    secret = StringField(validators=[DataRequired(), Regexp(r'^[A-Za-z0-9_*&$#@]{6, 22}$')])
+    secret = StringField(validators={DataRequired(), Regexp(r'^[A-Za-z0-9_*&$#@]{6,22}$')})
     nickname = StringField(validators=[DataRequired(), length(min=2, max=22)])
 
     def validate_account(self, value):
