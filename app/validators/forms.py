@@ -3,9 +3,10 @@
 # @Author  : iGolden
 # @Software: PyCharm
 from wtforms import StringField, IntegerField
-from wtforms.validators import DataRequired, length, ValidationError, Email, Regexp
+from wtforms.validators import DataRequired, length, Email, Regexp
 
 from app.libs.enums import ClientTypeEnum
+from app.libs.error_code import ParameterException
 from app.models.user import User
 from app.validators.base import BaseForm as Form
 
@@ -30,4 +31,4 @@ class UserEmailForm(ClientForm):
 
     def validate_account(self, value):
         if User.query.filter_by(email=value.data).first():
-            raise ValidationError()
+            raise ParameterException(msg='该邮箱已被注册')
