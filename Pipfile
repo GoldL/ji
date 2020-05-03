@@ -13,6 +13,7 @@ flask-httpauth = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 requests = "*"
+email-validator = "*"
 
 [requires]
 python_version = "3.7"
