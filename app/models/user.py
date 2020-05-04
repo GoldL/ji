@@ -2,7 +2,7 @@
 # @Time    : 2020/5/3 下午11:56
 # @Author  : iGolden
 # @Software: PyCharm
-from sqlalchemy import Column, Integer, String, SmallInteger
+from sqlalchemy import Column, Integer, String, SmallInteger, orm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.libs.error_code import NotFound, AuthFailed
@@ -16,8 +16,9 @@ class User(Base):
     auth = Column(SmallInteger, default=1)
     _password = Column('password', String(100))
 
-    def keys(self):
-        return ['id', 'email', 'nickname', 'auth']
+    @orm.reconstructor
+    def __init__(self):
+        self.fields = ['id', 'email', 'nickname']
 
     @property
     def password(self):
