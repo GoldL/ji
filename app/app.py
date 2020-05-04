@@ -2,27 +2,24 @@
 # @Time    : 2020/5/3 下午10:08
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import Flask
+from datetime import date
+
+from flask import Flask as _Flask
+from flask.json import JSONEncoder as _JSONEncoder
+
+from app.libs.error_code import ServerError
 
 
-def register_blueprints(app):
-    from app.api.v1 import create_blueprint_v1
-    app.register_blueprint(create_blueprint_v1(), url_prefix='/v1')
+class JSONEncoder(_JSONEncoder):
+
+    def default(self, o):
+        if hasattr(o, 'keys') and hasattr(o, '__getitem__'):
+            return dict(o)
+        # 兼容其他的序列化
+        if isinstance(o, date):
+            return o.strftime('%Y-%m-%d')
+        raise ServerError()
 
 
-def register_plugin(app):
-    from app.models.base import db
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-
-
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object('app.config.secure')
-    app.config.from_object('app.config.setting')
-
-    register_blueprints(app)
-    register_plugin(app)
-
-    return app
+class Flask(_Flask):
+    json_encoder = JSONEncoder

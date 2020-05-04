@@ -52,6 +52,9 @@ class Base(db.Model):
     def __init__(self):
         self.create_time = int(datetime.now().timestamp())
 
+    def __getitem__(self, item):
+        return getattr(self, item)
+
     def set_attr(self, attr_dic):
         for key, value in attr_dic.items():
             if hasattr(self, key) and key != 'id':

@@ -2,7 +2,7 @@
 # @Time    : 2020/5/3 下午10:04
 # @Author  : iGolden
 # @Software: PyCharm
-from app.app import create_app
+from app import create_app
 from app.libs.error import APIException, HTTPException
 from app.libs.error_code import ServerError
 
@@ -26,4 +26,4 @@ def framework_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3004)
