@@ -11,6 +11,11 @@ class Success(APIException):
     error_code = 0
 
 
+class DeleteSuccess(Success):
+    code = 202
+    error_code = -1
+
+
 class ServerError(APIException):
     code = 500
     msg = '未知错误异常'
