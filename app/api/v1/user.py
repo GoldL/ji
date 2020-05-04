@@ -2,7 +2,7 @@
 # @Time    : 2020/5/3 下午10:48
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import jsonify
+from flask import jsonify, g
 
 from app.libs.error_code import DeleteSuccess
 from app.libs.redprint import Redprint
@@ -20,9 +20,10 @@ def get_user(uid):
     return jsonify(user)
 
 
-@api.route('/<int:uid>', methods=['DELETE'])
+@api.route('', methods=['DELETE'])
 @auth.login_required
-def delete_user(uid):
+def delete_user():
+    uid = g.user.uid
     with db.auto_commit():
         user = User.query.filter_by(id=uid).first_or_404()
         user.delete()
