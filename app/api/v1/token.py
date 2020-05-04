@@ -21,7 +21,7 @@ def get_token():
     }
     identity = promise[ClientTypeEnum(form.type.data)](form.account.data, form.secret.data)
     expiration = current_app.config['TOKEN_EXPIRATION']
-    token = generate_auth_token(identity['uid'], form.type.data, 0, expiration)
+    token = generate_auth_token(identity['uid'], form.type.data, identity['scope'], expiration)
     t = {
         'token': token
     }
@@ -30,6 +30,4 @@ def get_token():
 
 def generate_auth_token(uid, ac_type, scope=None, expiration=7200):
     s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
-    return s.dumps({'uid': uid, 'type': ac_type.value}).decode('utf-8')
-
-
+    return s.dumps({'uid': uid, 'type': ac_type.value, 'scope': scope}).decode('utf-8')
