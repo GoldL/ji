@@ -17,7 +17,7 @@ class Scope:
 
 
 class AdminScope(Scope):
-    allow_module = {'v1.user'}
+    allow_module = {'v1.user', 'v1.posts'}
 
 
 class UserScope(Scope):

@@ -32,3 +32,10 @@ class UserEmailForm(ClientForm):
     def validate_account(self, value):
         if User.query.filter_by(email=value.data).first():
             raise ParameterException(msg='该邮箱已被注册')
+
+
+class PostsForm(Form):
+    title = StringField(validators=[DataRequired(), length(min=2, max=32)])
+    content = StringField(validators=[DataRequired()])
+    images = StringField(validators=[DataRequired()])
+    location = StringField(validators=[DataRequired()])
