@@ -3,7 +3,7 @@
 # @Author  : iGolden
 # @Software: PyCharm
 from flask import g
-from sqlalchemy import Column, Integer, ForeignKey, orm, String
+from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
@@ -13,8 +13,8 @@ class Posts(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user = relationship('User')
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    title = Column(String(32))
-    content = Column(String(1024))
+    title = Column(String(128))
+    content = Column(Text)
     images = Column(String(255))
     location = Column(String(128))
 

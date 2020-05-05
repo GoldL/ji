@@ -12,13 +12,15 @@ from app.models.base import Base, db
 class User(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(24), unique=True, nullable=False)
-    nickname = Column(String(24), unique=True)
+    nickname = Column(String(32), unique=True)
+    avatar = Column(String(240))
+    sex = Column(SmallInteger, default=1)
     auth = Column(SmallInteger, default=1)
     _password = Column('password', String(100))
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'email', 'nickname']
+        self.fields = ['id', 'avatar', 'sex', 'email', 'nickname']
 
     @property
     def password(self):
