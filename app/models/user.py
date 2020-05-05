@@ -13,7 +13,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(24), unique=True, nullable=False)
     nickname = Column(String(32), unique=True)
-    avatar = Column(String(240))
+    avatar = Column(String(240), default='')
     sex = Column(SmallInteger, default=1)
     auth = Column(SmallInteger, default=1)
     _password = Column('password', String(100))

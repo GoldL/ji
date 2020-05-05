@@ -8,6 +8,9 @@ from app.api.v1 import user
 from app.api.v1 import client
 from app.api.v1 import token
 from app.api.v1 import posts
+from app.api.v1 import reports
+from app.api.v1 import likes
+from app.api.v1 import collections
 
 
 def create_blueprint_v1():
@@ -16,5 +19,8 @@ def create_blueprint_v1():
     client.api.register(bp_v1)
     token.api.register(bp_v1)
     posts.api.register(bp_v1)
+    reports.api.register(bp_v1)
+    likes.api.register(bp_v1)
+    collections.api.register(bp_v1)
 
     return bp_v1

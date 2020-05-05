@@ -39,3 +39,14 @@ class PostsForm(Form):
     content = StringField(validators=[DataRequired()])
     images = StringField(validators=[DataRequired()])
     location = StringField(validators=[DataRequired()])
+
+
+class ReportsForm(Form):
+    content = StringField(validators=[DataRequired(), length(min=2, max=255)])
+    type = StringField(validators=[DataRequired()])
+    object = StringField(validators=[DataRequired()])
+    images = StringField()
+
+
+class PostIdForm(Form):
+    post_id = StringField(validators=[DataRequired()])
