@@ -36,3 +36,10 @@ def delete_posts(id):
         posts = Posts.query.filter_by(id=id).first_or_404()
         posts.delete()
     return DeleteSuccess(msg='随记已删除！')
+
+
+@api.route('/recommend', methods=['GET'])
+@auth.login_required
+def recommend_posts():
+    posts = Posts.recommend()
+    return jsonify(posts)

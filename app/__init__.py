@@ -3,6 +3,7 @@
 # @Author  : iGolden
 # @Software: PyCharm
 from .app import Flask
+from flask_cors import CORS
 
 
 def register_blueprints(app):
@@ -17,12 +18,19 @@ def register_plugin(app):
         db.create_all()
 
 
+def apply_cors(app):
+    CORS(app,  resources={r"/*": {"origins": "*"}})
+
+
 def create_app():
     app = Flask(__name__)
+
     app.config.from_object('app.config.secure')
     app.config.from_object('app.config.setting')
 
     register_blueprints(app)
     register_plugin(app)
+
+    apply_cors(app)
 
     return app

@@ -2,8 +2,8 @@
 # @Time    : 2020/5/4 下午3:47
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import g
-from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text
+from flask import g, current_app
+from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text, desc
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
@@ -20,7 +20,7 @@ class Posts(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location']
+        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location', 'create_time']
 
     @staticmethod
     def save_posts(title, content, images, location):
@@ -32,3 +32,10 @@ class Posts(Base):
             posts.images = images
             posts.location = location
             db.session.add(posts)
+
+    @classmethod
+    def recommend(cls):
+        recommend_posts = Posts.query.filter_by().order_by(desc(Posts.create_time)).limit(
+            current_app.config['RECOMMEND_POSTS_COUNT']
+        ).all()
+        return recommend_posts

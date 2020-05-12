@@ -4,3 +4,5 @@
 # @Software: PyCharm
 
 TOKEN_EXPIRATION = 30 * 24 * 3600
+
+RECOMMEND_POSTS_COUNT = 30
