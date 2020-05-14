@@ -8,7 +8,9 @@ from app.libs.error_code import Success, DeleteSuccess
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
+from app.models.likes import Likes
 from app.models.posts import Posts
+from app.models.user import User
 from app.validators.forms import PostsForm
 
 api = Redprint('posts')
@@ -41,5 +43,5 @@ def delete_posts(id):
 @api.route('/recommend', methods=['GET'])
 @auth.login_required
 def recommend_posts():
-    posts = Posts.recommend()
-    return jsonify(posts)
+    posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+    return jsonify(posts_list)
