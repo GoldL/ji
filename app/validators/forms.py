@@ -50,3 +50,7 @@ class ReportsForm(Form):
 
 class PostIdForm(Form):
     post_id = StringField(validators=[DataRequired()])
+
+
+class UserIdForm(Form):
+    user_id = StringField(validators=[DataRequired()])

@@ -2,11 +2,12 @@
 # @Time    : 2020/5/4 下午3:47
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import g, current_app
-from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text, desc
+from flask import g
+from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
+from app.models.user import User
 
 
 class Posts(Base):
@@ -35,7 +36,10 @@ class Posts(Base):
 
     @classmethod
     def recommend(cls):
-        recommend_posts = Posts.query.filter_by().order_by(desc(Posts.create_time)).limit(
-            current_app.config['RECOMMEND_POSTS_COUNT']
-        ).all()
-        return recommend_posts
+        posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+        return posts_list
+
+    @classmethod
+    def nearby(cls):
+        posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+        return posts_list
