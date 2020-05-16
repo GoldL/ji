@@ -28,6 +28,9 @@ class Query(BaseQuery):
             kwargs['status'] = 1
         return super(Query, self).filter_by(**kwargs)
 
+    def filter_original(self, **kwargs):
+        return super(Query, self).filter_by(**kwargs)
+
     def get_or_404(self, ident):
         rv = self.get(ident)
         if not rv:

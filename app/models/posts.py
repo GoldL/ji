@@ -2,7 +2,7 @@
 # @Time    : 2020/5/4 下午3:47
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import g
+from flask import g, current_app
 from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text
 from sqlalchemy.orm import relationship
 
@@ -42,4 +42,25 @@ class Posts(Base):
     @classmethod
     def nearby(cls):
         posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+        return posts_list
+
+    @classmethod
+    def search(cls, title):
+        posts_list = Posts.query.filter(
+            Posts.title.like("%" + title + "%") if title is not None else "",
+            Posts.status == 1
+        ).limit(current_app.config('PAGE_POSTS_COUNT')).all()
+        return posts_list
+
+    @classmethod
+    def address(cls, address):
+        posts_list = Posts.query.filter(
+            Posts.location.like("%" + address + "%") if address is not None else "",
+            Posts.status == 1
+        ).limit(current_app.config('PAGE_POSTS_COUNT')).all()
+        return posts_list
+
+    @classmethod
+    def user_posts(cls, user_id):
+        posts_list = Posts.query.filter_by(user_id=user_id).join(User, User.id == Posts.user_id).all()
         return posts_list

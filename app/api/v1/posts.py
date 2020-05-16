@@ -4,12 +4,13 @@
 # @Software: PyCharm
 import json
 
+from flask import request, g
+
 from app.libs.error_code import Success, DeleteSuccess
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.posts import Posts
-from app.models.user import User
 from app.validators.forms import PostsForm
 from app.view_model.posts import PostsCollection, PostsModel
 
@@ -53,5 +54,34 @@ def recommend_posts():
 @auth.login_required
 def nearby_posts():
     posts_list = Posts.nearby()
+    list = PostsCollection(posts_list)
+    return json.dumps(list.data)
+
+
+@api.route('/search', methods=['GET'])
+@auth.login_required
+def search_posts():
+    title = request.args.get('title')
+    posts_list = Posts.search(title)
+    list = PostsCollection(posts_list)
+    return json.dumps(list.data)
+
+
+@api.route('/address', methods=['GET'])
+@auth.login_required
+def address_posts():
+    address = request.args.get('address')
+    posts_list = Posts.address(address)
+    list = PostsCollection(posts_list)
+    return json.dumps(list.data)
+
+
+@api.route('/user', methods=['GET'])
+@auth.login_required
+def user_posts():
+    uid = g.user.uid
+    user_id = request.args.get('uid')
+    user_id = user_id if user_id is not None else uid
+    posts_list = Posts.user_posts(user_id)
     list = PostsCollection(posts_list)
     return json.dumps(list.data)

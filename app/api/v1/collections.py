@@ -18,12 +18,12 @@ api = Redprint('collections')
 @auth.login_required
 def collection_posts():
     form = PostIdForm().validate_for_api()
-    collections = Collections.query.filter_by(post_id=form.post_id.data).first()
+    collections = Collections.query.filter_original(post_id=form.post_id.data).first()
     if not collections:
         Collections.save_collections(form.post_id.data)
     else:
         user_id = g.user.uid
-        Collections.query.filter_by(user_id=user_id, post_id=form.post_id.data).update({Collections.status: 1})
+        Collections.query.filter_original(user_id=user_id, post_id=form.post_id.data).update({Collections.status: 1})
     return Success(msg='添加至收藏！')
 
 
@@ -33,6 +33,6 @@ def uncollection_posts():
     form = PostIdForm().validate_for_api()
     user_id = g.user.uid
     with db.auto_commit():
-        collections = Collections.query.filter_by(user_id=user_id, post_id=form.post_id.data).first_or_404()
+        collections = Collections.query.filter_original(user_id=user_id, post_id=form.post_id.data).first_or_404()
         collections.delete()
     return DeleteSuccess(msg='取消收藏')

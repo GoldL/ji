@@ -8,6 +8,15 @@ from app.models.followers import Followers
 from app.models.posts import Posts
 
 
+class UserCollection:
+    def __init__(self, users):
+        self.data = []
+        self.data = self._parse(users)
+
+    def _parse(self, users):
+        return [UserModel(user).data for user in users]
+
+
 class UserModel:
     def __init__(self, user):
         self.data = {}
@@ -30,3 +39,5 @@ class UserModel:
             'collection_num': collection_num,
             'fans_num': fans_num
         }
+        
+        return r
