@@ -2,8 +2,6 @@
 # @Time    : 2020/5/3 下午11:33
 # @Author  : iGolden
 # @Software: PyCharm
-from flask import request
-
 from app.libs.enums import ClientTypeEnum
 from app.libs.error_code import Success
 from app.libs.redprint import Redprint

@@ -41,6 +41,15 @@ def super_delete_user():
     return DeleteSuccess()
 
 
+@api.route('/active', methods=['POST'])
+@auth.login_required
+def super_active_user():
+    form = UserIdForm().validate_for_api()
+    with db.auto_commit():
+        User.query.filter_original(id=form.user_id.data).update({User.status: 1})
+    return Success(msg='用户已恢复！')
+
+
 @api.route('', methods=['GET'])
 @auth.login_required
 def get_user():
@@ -85,12 +94,3 @@ def update_user():
     user = User.query.filter_by(id=user_id).first()
     user = UserModel(user)
     return json.dumps(user.data)
-
-
-@api.route('/active', methods=['POST'])
-@auth.login_required
-def active_user():
-    form = UserIdForm().validate_for_api()
-    with db.auto_commit():
-        User.query.filter_original(id=form.user_id.data).update({User.status: 1})
-    return Success(msg='用户已恢复！')
