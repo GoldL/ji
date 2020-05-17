@@ -31,10 +31,22 @@ class Followers(Base):
 
     @classmethod
     def user_followers(cls, user_id):
-        followers_list = Followers.query.filter_by(user_id=user_id).join(User, User.id == Followers.follower_id).all()
+        followers_list = Followers.query.filter_by(user_id=user_id).all()
+        followers_list = [cls.find_follower(follower) for follower in followers_list]
         return followers_list
 
     @classmethod
     def user_fans(cls, user_id):
         fans_list = Followers.query.filter_by(follower_id=user_id).all()
         return fans_list
+
+    @classmethod
+    def find_follower(self, follower):
+        user = User.query.filter_original(id=follower.follower_id).first()
+        follower.user.id = user.id
+        follower.user.email = user.email
+        follower.user.avatar = user.avatar
+        follower.user.sex = user.sex
+        follower.user.nickname = user.nickname
+        follower.user.status = user.status
+        return follower
