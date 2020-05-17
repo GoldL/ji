@@ -11,10 +11,17 @@ from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.user import User
-from app.validators.forms import UserIdForm
+from app.validators.forms import UserIdForm, UserUpdateForm
 from app.view_model.user import UserModel
 
 api = Redprint('user')
+
+
+@api.route('/list', methods=['GET'])
+@auth.login_required
+def super_user_list():
+    list = User.user_list()
+    return jsonify(list)
 
 
 @api.route('/<int:uid>', methods=['GET'])
@@ -24,11 +31,12 @@ def super_get_user(uid):
     return jsonify(user)
 
 
-@api.route('/<int:uid>', methods=['DELETE'])
+@api.route('/del', methods=['DELETE'])
 @auth.login_required
-def super_delete_user(uid):
+def super_delete_user():
     with db.auto_commit():
-        user = User.query.filter_by(id=uid).first_or_404()
+        form = UserIdForm().validate_for_api()
+        user = User.query.filter_by(id=form.user_id.data).first_or_404()
         user.delete()
     return DeleteSuccess()
 
@@ -59,5 +67,20 @@ def delete_user():
 def get_other_user():
     form = UserIdForm().validate_for_api()
     user = User.query.filter_by(id=form.user_id.data).first_or_404()
+    user = UserModel(user)
+    return json.dumps(user.data)
+
+
+@api.route('/update', methods=['POST'])
+@auth.login_required
+def update_user():
+    form = UserUpdateForm().validate_for_api()
+    user_id = g.user.uid
+    User.query.filter_by(id=user_id).update({
+        User.nickname: form.nickname.data,
+        User.avatar: form.avatar.data,
+        User.sex: form.sex.data
+    })
+    user = User.query.filter_by(id=user_id).first()
     user = UserModel(user)
     return json.dumps(user.data)

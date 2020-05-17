@@ -14,5 +14,6 @@ with app.app_context():
         user.nickname = 'admin'
         user.password = '123456'
         user.email = 'admin@qq.com'
+        user.avatar = 'http://qiniu.youbego.top/avatar.jpg'
         user.auth = 2
         db.session.add(user)

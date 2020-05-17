@@ -3,7 +3,6 @@
 # @Author  : iGolden
 # @Software: PyCharm
 from sqlalchemy import Column, Integer, String, SmallInteger, orm
-from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.libs.error_code import NotFound, AuthFailed
@@ -21,7 +20,7 @@ class User(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'avatar', 'sex', 'email', 'nickname']
+        self.fields = ['id', 'avatar', 'sex', 'email', 'nickname', 'status']
 
     @property
     def password(self):
@@ -52,3 +51,8 @@ class User(Base):
         if not self._password:
             return False
         return check_password_hash(self._password, raw)
+
+    @classmethod
+    def user_list(cls):
+        user_list = User.query.filter_original().all()
+        return user_list

@@ -4,14 +4,14 @@
 # @Software: PyCharm
 import json
 
-from flask import request, g
+from flask import request, g, jsonify
 
 from app.libs.error_code import Success, DeleteSuccess
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
 from app.models.posts import Posts
-from app.validators.forms import PostsForm
+from app.validators.forms import PostsForm, PostIdForm
 from app.view_model.posts import PostsCollection, PostsModel
 
 api = Redprint('posts')
@@ -85,3 +85,20 @@ def user_posts():
     posts_list = Posts.user_posts(user_id)
     list = PostsCollection(posts_list)
     return json.dumps(list.data)
+
+
+@api.route('/list', methods=['GET'])
+@auth.login_required
+def super_posts_list():
+    posts_list = Posts.super_posts_list()
+    return jsonify(posts_list)
+
+
+@api.route('/del', methods=['DELETE'])
+@auth.login_required
+def super_delete_posts():
+    form = PostIdForm().validate_for_api()
+    with db.auto_commit():
+        posts = Posts.query.filter_by(id=form.post_id.data).first_or_404()
+        posts.delete()
+    return DeleteSuccess(msg='随记已删除！')

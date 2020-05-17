@@ -34,6 +34,12 @@ class UserEmailForm(ClientForm):
             raise ParameterException(msg='该邮箱已被注册')
 
 
+class UserUpdateForm(Form):
+    nickname = StringField(validators=[DataRequired(), length(min=2, max=32)])
+    sex = IntegerField(validators=[DataRequired()])
+    avatar = StringField(validators=[DataRequired()])
+
+
 class PostsForm(Form):
     title = StringField(validators=[DataRequired(), length(min=2, max=32)])
     content = StringField(validators=[DataRequired()])
