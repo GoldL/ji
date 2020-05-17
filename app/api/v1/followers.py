@@ -23,7 +23,8 @@ def follower_user():
     if not follower:
         Followers.save_followers(form.user_id.data)
     else:
-        Followers.query.filter_original(user_id=user_id, follower_id=form.user_id.data).update({Followers.status: 1})
+        with db.auto_commit():
+            Followers.query.filter_original(user_id=user_id, follower_id=form.user_id.data).update({Followers.status: 1})
     return Success(msg='关注成功！')
 
 
@@ -48,11 +49,11 @@ def user_followers():
     return jsonify(followers_list)
 
 
-# @api.route('/fans', methods=['GET'])
-# @auth.login_required
-# def user_fans():
-#     uid = g.user.uid
-#     user_id = request.args.get('uid')
-#     user_id = user_id if user_id is not None else uid
-#     fans_list = Followers.user_fans(user_id)
-#     return jsonify(fans_list)
+@api.route('/fans', methods=['GET'])
+@auth.login_required
+def user_fans():
+    uid = g.user.uid
+    user_id = request.args.get('uid')
+    user_id = user_id if user_id is not None else uid
+    fans_list = Followers.user_fans(user_id)
+    return jsonify(fans_list)

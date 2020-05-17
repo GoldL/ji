@@ -6,7 +6,7 @@ import json
 
 from flask import jsonify, g, request
 
-from app.libs.error_code import DeleteSuccess
+from app.libs.error_code import DeleteSuccess, Success
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
@@ -76,11 +76,21 @@ def get_other_user():
 def update_user():
     form = UserUpdateForm().validate_for_api()
     user_id = g.user.uid
-    User.query.filter_by(id=user_id).update({
-        User.nickname: form.nickname.data,
-        User.avatar: form.avatar.data,
-        User.sex: form.sex.data
-    })
+    with db.auto_commit():
+        User.query.filter_by(id=user_id).update({
+            User.nickname: form.nickname.data,
+            User.avatar: form.avatar.data,
+            User.sex: form.sex.data
+        })
     user = User.query.filter_by(id=user_id).first()
     user = UserModel(user)
     return json.dumps(user.data)
+
+
+@api.route('/active', methods=['POST'])
+@auth.login_required
+def active_user():
+    form = UserIdForm().validate_for_api()
+    with db.auto_commit():
+        User.query.filter_original(id=form.user_id.data).update({User.status: 1})
+    return Success(msg='用户已恢复！')

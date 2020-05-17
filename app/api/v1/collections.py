@@ -23,7 +23,8 @@ def collection_posts():
     if not collections:
         Collections.save_collections(form.post_id.data)
     else:
-        Collections.query.filter_original(user_id=user_id, post_id=form.post_id.data).update({Collections.status: 1})
+        with db.auto_commit():
+            Collections.query.filter_original(user_id=user_id, post_id=form.post_id.data).update({Collections.status: 1})
     return Success(msg='添加至收藏！')
 
 

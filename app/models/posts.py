@@ -67,5 +67,5 @@ class Posts(Base):
 
     @classmethod
     def super_posts_list(cls):
-        posts_list = Posts.query.filter_original().join(User, User.id == Posts.user_id).all()
+        posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
         return posts_list

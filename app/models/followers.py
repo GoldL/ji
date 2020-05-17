@@ -7,13 +7,13 @@ from sqlalchemy import Column, Integer, ForeignKey, String, orm
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
+from app.models.user import User
 
 
 class Followers(Base):
     id = Column(Integer, primary_key=True)
     user = relationship('User')
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    # fans = relationship('User')
     follower_id = Column(Integer)
     remark = Column(String(64), default='')
 
@@ -31,10 +31,10 @@ class Followers(Base):
 
     @classmethod
     def user_followers(cls, user_id):
-        followers_list = Followers.query.filter_by(user_id=user_id).all()
+        followers_list = Followers.query.filter_by(user_id=user_id).join(User, User.id == Followers.follower_id).all()
         return followers_list
 
-    # @classmethod
-    # def user_fans(cls, user_id):
-    #     fans_list = Followers.query.filter_by(follower_id=user_id).all()
-    #     return fans_list
+    @classmethod
+    def user_fans(cls, user_id):
+        fans_list = Followers.query.filter_by(follower_id=user_id).all()
+        return fans_list

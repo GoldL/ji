@@ -23,7 +23,8 @@ def like_posts():
     if not like:
         Likes.save_likes(form.post_id.data)
     else:
-        Likes.query.filter_original(user_id=user_id, post_id=form.post_id.data).update({Likes.status: 1})
+        with db.auto_commit():
+            Likes.query.filter_original(user_id=user_id, post_id=form.post_id.data).update({Likes.status: 1})
     return Success(msg='添加至喜欢！')
 
 

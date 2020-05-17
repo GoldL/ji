@@ -28,7 +28,7 @@ def save_posts():
 @api.route('/<int:id>', methods=['GET'])
 @auth.login_required
 def get_posts(id):
-    post = Posts.query.filter_by(id=id).first_or_404()
+    post = Posts.query.filter_original(id=id).first_or_404()
     post = PostsModel(post)
     return json.dumps(post.data)
 
@@ -37,7 +37,7 @@ def get_posts(id):
 @auth.login_required
 def delete_posts(id):
     with db.auto_commit():
-        posts = Posts.query.filter_by(id=id).first_or_404()
+        posts = Posts.query.filter_original(id=id).first_or_404()
         posts.delete()
     return DeleteSuccess(msg='随记已删除！')
 
@@ -99,6 +99,6 @@ def super_posts_list():
 def super_delete_posts():
     form = PostIdForm().validate_for_api()
     with db.auto_commit():
-        posts = Posts.query.filter_by(id=form.post_id.data).first_or_404()
+        posts = Posts.query.filter_original(id=form.post_id.data).first_or_404()
         posts.delete()
     return DeleteSuccess(msg='随记已删除！')
