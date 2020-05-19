@@ -13,6 +13,8 @@ from app.models.posts import Posts
 from app.models.reports import Reports
 from app.models.user import User
 from app.validators.forms import ReportsForm
+from app.view_model.posts import PostsModel
+from app.view_model.user import UserModel
 
 api = Redprint('reports')
 
@@ -29,18 +31,18 @@ def save_reports():
 @auth.login_required
 def reports_list():
     list = Reports.list()
-    list = jsonify(list)
-    return list
-    print(list)
+    list = jsonify(list).json
     list = [get_object(item) for item in list]
-    return list
+    return Success(msg=list)
 
 
 def get_object(item):
-    if item.type == 1:
-        object = Posts.query.filter_original(id=item.object).first()
-        item.object = jsonify(object)
+    if item['type'] == 1:
+        post = Posts.query.filter_original(id=item['object']).first()
+        object = jsonify(post).json
+        item['object'] = object
     else:
-        item.object = User.query.filter_original(id=item.object).first()
-        item.object = jsonify(object)
+        user = User.query.filter_original(id=item['object']).first()
+        object = jsonify(user).json
+        item['object'] = object
     return item

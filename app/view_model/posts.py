@@ -46,7 +46,7 @@ class PostsModel:
             'user_nickname': post.user.nickname,
             'like_num': like_num,
             'is_like': is_like,
-            'is_cllection': is_collection
+            'is_collection': is_collection
         }
 
         return r
