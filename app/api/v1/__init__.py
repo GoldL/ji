@@ -12,6 +12,7 @@ from app.api.v1 import reports
 from app.api.v1 import likes
 from app.api.v1 import collections
 from app.api.v1 import followers
+from app.api.v1 import comments
 from app.api.v1 import upload
 
 
@@ -25,6 +26,7 @@ def create_blueprint_v1():
     likes.api.register(bp_v1)
     collections.api.register(bp_v1)
     followers.api.register(bp_v1)
+    comments.api.register(bp_v1)
     upload.api.register(bp_v1)
 
     return bp_v1

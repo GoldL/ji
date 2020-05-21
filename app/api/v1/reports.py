@@ -2,7 +2,6 @@
 # @Time    : 2020/5/5 下午10:22
 # @Author  : iGolden
 # @Software: PyCharm
-import json
 
 from flask import jsonify
 
@@ -13,8 +12,6 @@ from app.models.posts import Posts
 from app.models.reports import Reports
 from app.models.user import User
 from app.validators.forms import ReportsForm
-from app.view_model.posts import PostsModel
-from app.view_model.user import UserModel
 
 api = Redprint('reports')
 
@@ -29,7 +26,7 @@ def save_reports():
 
 @api.route('/list', methods=['GET'])
 @auth.login_required
-def reports_list():
+def super_reports_list():
     list = Reports.list()
     list = jsonify(list).json
     list = [get_object(item) for item in list]

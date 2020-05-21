@@ -17,12 +17,14 @@ class Scope:
 
 
 class AdminScope(Scope):
-    allow_module = {'v1.user', 'v1.posts', 'v1.reports', 'v1.likes', 'v1.collections', 'v1.followers', 'v1.upload'}
+    allow_module = {'v1.user', 'v1.posts', 'v1.reports', 'v1.likes', 'v1.collections', 'v1.followers', 'v1.comments',
+                    'v1.upload'}
 
 
 class UserScope(Scope):
     forbidden = {'v1.user+super_get_user', 'v1.user+super_delete_user', 'v1.user+super_user_list',
-                 'v1.user+super_user_active', 'v1.posts+super_posts_list', 'v1.posts+super_delete_posts'}
+                 'v1.user+super_user_active', 'v1.posts+super_posts_list', 'v1.posts+super_delete_posts',
+                 'v1.posts+super_reports_list'}
 
     def __init__(self):
         self + AdminScope()

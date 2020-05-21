@@ -60,3 +60,7 @@ class PostIdForm(Form):
 
 class UserIdForm(Form):
     user_id = StringField(validators=[DataRequired()])
+
+
+class CommentsForm(PostIdForm):
+    content = StringField(validators=[DataRequired(), length(min=2, max=255)])

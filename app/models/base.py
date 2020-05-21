@@ -55,29 +55,33 @@ class Base(db.Model):
     def __init__(self):
         self.create_time = int(datetime.now().timestamp())
 
-    def __getitem__(self, item):
-        return getattr(self, item)
-
-    def set_attr(self, attr_dic):
-        for key, value in attr_dic.items():
-            if hasattr(self, key) and key != 'id':
-                setattr(self, key, value)
-
-    def delete(self):
-        self.status = 0
-
-    def keys(self):
-        return self.fields
-
-    def hide(self, *keys):
-        [self.fields.remove(key) for key in keys]
-
-    def append(self, *keys):
-        [self.fields.append(key) for key in keys]
-
     @property
     def create_datetime(self):
         if self.create_time:
             return datetime.fromtimestamp(self.create_time)
         else:
             return None
+
+    __mapper_args__ = {
+        "order_by": create_time.desc()
+    }
+
+    def __getitem__(self, item):
+        return getattr(self, item)
+
+    def delete(self):
+        self.status = 0
+
+    def set_attr(self, attr_dic):
+        for key, value in attr_dic.items():
+            if hasattr(self, key) and key != 'id':
+                setattr(self, key, value)
+
+    def hide(self, *keys):
+        [self.fields.remove(key) for key in keys]
+
+    def keys(self):
+        return self.fields
+
+    def append(self, *keys):
+        [self.fields.append(key) for key in keys]
