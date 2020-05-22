@@ -19,6 +19,7 @@ class Comments(Base):
 
     @orm.reconstructor
     def __init__(self):
+        super(Comments, self).__init__()
         self.fields = ['id', 'user_id', 'content', 'post_id', 'posts', 'create_time', 'user']
 
     @staticmethod

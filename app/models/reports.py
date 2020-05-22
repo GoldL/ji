@@ -20,6 +20,7 @@ class Reports(Base):
 
     @orm.reconstructor
     def __init__(self):
+        super(Reports, self).__init__()
         self.fields = ['id', 'content', 'images', 'type', 'object', 'user', 'create_time', 'user_id', 'status']
 
     @staticmethod

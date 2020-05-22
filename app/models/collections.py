@@ -18,6 +18,7 @@ class Collections(Base):
 
     @orm.reconstructor
     def __init__(self):
+        super(Collections, self).__init__()
         self.fields = ['id', 'user_id', 'user', 'posts', 'post_id']
 
     @staticmethod

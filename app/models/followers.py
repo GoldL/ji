@@ -19,6 +19,7 @@ class Followers(Base):
 
     @orm.reconstructor
     def __init__(self):
+        super(Followers, self).__init__()
         self.fields = ['id', 'user_id', 'user', 'follower_id', 'remark']
 
     @staticmethod

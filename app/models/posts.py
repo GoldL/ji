@@ -21,7 +21,8 @@ class Posts(Base):
 
     @orm.reconstructor
     def __init__(self):
-        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location', 'create_time', 'user', 'status']
+        super(Posts, self).__init__()
+        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location', 'create_datetime', 'user', 'status']
 
     @staticmethod
     def save_posts(title, content, images, location):
@@ -36,12 +37,12 @@ class Posts(Base):
 
     @classmethod
     def recommend(cls):
-        posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+        posts_list = Posts.query.filter_by().all()
         return posts_list
 
     @classmethod
     def nearby(cls):
-        posts_list = Posts.query.filter_by().join(User, User.id == Posts.user_id).all()
+        posts_list = Posts.query.filter_by().all()
         return posts_list
 
     @classmethod
