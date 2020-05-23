@@ -53,7 +53,8 @@ def recommend_posts():
 @api.route('/nearby', methods=['GET'])
 @auth.login_required
 def nearby_posts():
-    posts_list = Posts.nearby()
+    address = request.args.get('address')
+    posts_list = Posts.nearby(address)
     list = PostsCollection(posts_list)
     return json.dumps(list.data)
 

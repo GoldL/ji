@@ -41,8 +41,11 @@ class Posts(Base):
         return posts_list
 
     @classmethod
-    def nearby(cls):
-        posts_list = Posts.query.filter_by().all()
+    def nearby(cls, address):
+        posts_list = Posts.query.filter(
+            Posts.location.like("%" + address + "%") if address is not None else "",
+            Posts.status == 1
+        ).all()
         return posts_list
 
     @classmethod

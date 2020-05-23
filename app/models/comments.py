@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, ForeignKey, orm, String
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
+from app.models.posts import Posts
 
 
 class Comments(Base):
@@ -43,5 +44,8 @@ class Comments(Base):
 
     @staticmethod
     def received_comments():
-        list = Comments.query.filter_by(user_id=g.user.uid).all()
+        user_id = g.user.uid
+        posts_list = Posts.user_posts(user_id)
+        posts_ids = [post.id for post in posts_list]
+        list = Comments.query.filter(Comments.post_id.in_(posts_ids), Comments.user_id != user_id).all()
         return list
