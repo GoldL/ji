@@ -22,7 +22,7 @@ class Posts(Base):
     @orm.reconstructor
     def __init__(self):
         super(Posts, self).__init__()
-        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location', 'create_datetime', 'user', 'status']
+        self.fields = ['id', 'user_id', 'title', 'content', 'images', 'location', 'create_time', 'user', 'status']
 
     @staticmethod
     def save_posts(title, content, images, location):
