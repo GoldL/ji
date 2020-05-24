@@ -21,7 +21,7 @@ def save_posts():
     return Success(msg='评论创建成功！')
 
 
-@api.route('/posts', methods=['GET'])
+@api.route('/posts', methods=['POST'])
 @auth.login_required
 def posts_comments():
     form = PostIdForm().validate_for_api()
