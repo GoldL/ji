@@ -53,7 +53,7 @@ class Posts(Base):
         posts_list = Posts.query.filter(
             Posts.title.like("%" + title + "%") if title is not None else "",
             Posts.status == 1
-        ).limit(current_app.config('PAGE_POSTS_COUNT')).all()
+        ).limit(current_app.config['PAGE_POSTS_COUNT']).all()
         return posts_list
 
     @classmethod
@@ -61,7 +61,7 @@ class Posts(Base):
         posts_list = Posts.query.filter(
             Posts.location.like("%" + address + "%") if address is not None else "",
             Posts.status == 1
-        ).limit(current_app.config('PAGE_POSTS_COUNT')).all()
+        ).limit(current_app.config['PAGE_POSTS_COUNT']).all()
         return posts_list
 
     @classmethod
