@@ -2,12 +2,13 @@
 # @Time    : 2020/5/4 下午3:47
 # @Author  : iGolden
 # @Software: PyCharm
+
 from flask import g, current_app
-from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text
+from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text, func
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
-from app.models.user import User
+from app.models.likes import Likes
 
 
 class Posts(Base):
@@ -37,7 +38,8 @@ class Posts(Base):
 
     @classmethod
     def recommend(cls):
-        posts_list = Posts.query.filter_by().all()
+        posts_list = db.session.query(Posts).outerjoin(Likes).group_by(Posts.id).order_by(
+            func.count(Likes.post_id).desc())
         return posts_list
 
     @classmethod

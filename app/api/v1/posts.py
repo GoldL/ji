@@ -3,6 +3,7 @@
 # @Author  : iGolden
 # @Software: PyCharm
 import json
+import random
 
 from flask import request, g, jsonify
 
@@ -47,6 +48,7 @@ def delete_posts(id):
 def recommend_posts():
     posts_list = Posts.recommend()
     list = PostsCollection(posts_list)
+    random.shuffle(list.data)
     return json.dumps(list.data)
 
 
