@@ -53,7 +53,10 @@ class Base(db.Model):
     status = Column(SmallInteger, default=1)
 
     def __init__(self):
-        self.create_time = int(datetime.now().timestamp())
+        if self.create_time:
+            self.create_time = self.create_time
+        else:
+            self.create_time = int(datetime.now().timestamp())
 
     @property
     def create_datetime(self):
