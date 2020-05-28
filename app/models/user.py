@@ -42,7 +42,9 @@ class User(Base):
 
     @staticmethod
     def verify(email, password):
-        user = User.query.filter_by(email=email).first_or_404()
+        user = User.query.filter_original(email=email).first()
+        if user.status == 0:
+            raise AuthFailed(msg='账号已被禁用，请联系管理员', error_code=1008)
         if not user.check_password(password):
             raise AuthFailed()
         scope = 'AdminScope' if user.auth == 2 else 'UserScope'
