@@ -4,7 +4,8 @@
 # @Software: PyCharm
 
 from flask import g, current_app
-from sqlalchemy import Column, Integer, ForeignKey, orm, String, Text, func
+from sqlalchemy import Column, Integer, ForeignKey, orm, String, func
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
@@ -16,7 +17,7 @@ class Posts(Base):
     user = relationship('User')
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     title = Column(String(128))
-    content = Column(Text)
+    content = Column(LONGTEXT)
     images = Column(String(255))
     location = Column(String(128))
 
