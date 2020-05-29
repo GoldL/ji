@@ -38,7 +38,7 @@ class Posts(Base):
 
     @classmethod
     def recommend(cls):
-        posts_list = db.session.query(Posts).outerjoin(Likes).group_by(Posts.id).order_by(
+        posts_list = db.session.query(Posts).filter_by().outerjoin(Likes).filter(Posts.status == 1).group_by(Posts.id).order_by(
             func.count(Likes.post_id).desc())
         return posts_list
 
